@@ -1,0 +1,22 @@
+{% extends "layouts/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <form action="" class="form col-8 m-auto" method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ form|crispy }}
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-md btn-info">
+        </div>
+    </form>
+    <div class="pt-3 col-8 m-auto">
+        <small class="text-muted text-info">
+            Already have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
+        </small>
+    </div>
+
+{% endblock content %}
+

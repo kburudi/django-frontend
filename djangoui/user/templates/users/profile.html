@@ -1,0 +1,127 @@
+{% extends "layouts/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+
+            <div class="card-body">
+                <div class="card-title mb-4">
+                    <div class="d-flex justify-content-start">
+                        <div class="image-container">
+                            <img src="{{ user.profile.image.url }}" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail rounded-circle" />
+                            <div class="middle mt-2">
+                            </div>
+                        </div>
+                        <div class="userData ml-5 mt-1">
+                            <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a href="javascript:void(0);" class="text-success"> {{user.username}} </a></h2>
+                            <hr>
+                            <div class="">
+                                {{ user.email }}
+                            </div>
+                            <hr>
+                            <div>
+                                <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#updateuser">Update <span class="fas fa-edit"></span></button>
+                            </div>
+                        </div>
+                        <div class="ml-auto">
+                            <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="myposts-tab" data-toggle="tab" href="#myposts" role="tab" aria-controls="myposts" aria-selected="false">My Posts</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content ml-1" id="myTabContent">
+                            <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+
+
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Full Name</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        {{ user.profile }}
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Bio</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        {{ user.profile.bio }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Phone Numbers</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        {{ user.profile.phone_number }}
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                            </div>
+                            <div class="tab-pane fade" id="myposts" role="tabpanel" aria-labelledby="myposts-tab">
+                                <h3>My posts</h3>
+                                <div class="row">
+                                    {% for post in posts %}
+                                        <div class="card col-3 mr-2 col-sm-6">
+                                          <div class="card-body">
+                                            <h5 class="card-title">{{ post.title }}</h5>
+                                            <p class="card-text"> {{ post.display_text }}</p>
+                                            <a href="#" class="btn btn-primary">View Post</a>
+                                          </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateuser" tabindex="-1" role="dialog" aria-labelledby="updateprofLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateprofLabel">New message</h5>
+      </div>
+      <div class="modal-body">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+          <div class="form-group">
+                {{ up_form|crispy }}
+          </div>
+          <div class="form-group">
+                {{ profile|crispy }}
+          </div>
+
+          <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-block btn-primary">
+          </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

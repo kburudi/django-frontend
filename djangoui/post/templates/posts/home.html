@@ -4,10 +4,10 @@
 <div class="row">
 {% for post in posts %}
 	<div class="card col-5 m-auto" style="width: 18rem;">
-      <!-- <img src="{{ post.image_url }}" class="card-img-top" alt="..."> -->
+      <img src="{{ post.image.url }}" width="200px" height="200px" class="card-img-top" alt="...">
       <div class="card-body">
         <h3> {{ post.display_title }}</h3>
-        <p class="card-text">{{ post.display_text }}...</p>
+        <p class="card-text">{{ post.display_text }}.</p>
         <hr class='mb-1 mt-2'>
         <p class="mini-text">
             <span class="text-primary mr-2">{{ post.author }}</span>

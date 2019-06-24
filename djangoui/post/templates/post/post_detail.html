@@ -1,0 +1,27 @@
+{% extends "layouts/layout.html" %}
+{% block content %}
+<div class="row">
+  <div class="card col-10 m-auto" style="width: 18rem;">
+      <img src="{{ post.image.url }}" width="500px" height="350px" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h3> {{ post.title }}</h3>
+        <p class="card-text">{{ post.description }}.</p>
+        <hr class='mb-1 mt-2'>
+        <p class="mini-text">
+            <span class="text-primary mr-2">{{ post.author }}</span>
+            <span class="text-muted">{{post.updated_at|date:"d F, Y"}}</span>
+        </p>
+      </div>
+      {% if request.user == post.author %}
+      <div class="card-footer text-center bg-white">
+          <button class="btn btn-primary mr-3">
+            <a class="text-white text-decoration-none" href="{% url 'update-post' post.pk %}">Update</a>
+          </button>
+          <button class="btn btn-danger mr-3">
+            <a class="text-white text-decoration-none" href="{% url 'delete-post' post.pk %}">Delete</a>
+          </button>
+      </div>
+      {% endif %}
+    </div>
+</div>
+{% endblock content %}

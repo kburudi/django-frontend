@@ -77,14 +77,21 @@
 
                             </div>
                             <div class="tab-pane fade" id="myposts" role="tabpanel" aria-labelledby="myposts-tab">
-                                <h3>My posts</h3>
+                                <div class="row">
+                                    <div class="col-6"><h3>My posts</h3></div>
+                                    <div class="col-6">
+                                    <button class="btn btn-success">
+                                        <a href="{% url 'new-post' %}" class="nav-item text-white text-decoration-none">Create Post</a>
+                                    </button>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     {% for post in posts %}
-                                        <div class="card col-3 mr-2 col-sm-6">
+                                        <div class="card col-3 col-sm-6">
                                           <div class="card-body">
                                             <h5 class="card-title">{{ post.title }}</h5>
                                             <p class="card-text"> {{ post.display_text }}</p>
-                                            <a href="#" class="btn btn-primary">View Post</a>
+                                            <a href="{% url 'single-post' post.id %}" class="btn btn-primary">View Post</a>
                                           </div>
                                         </div>
                                     {% endfor %}

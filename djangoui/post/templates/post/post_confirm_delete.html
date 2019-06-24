@@ -1,0 +1,19 @@
+{% extends "layouts/layout.html" %}
+{% block content %}
+
+<div class="row container">
+<h3 class="col-md-8 mx-auto col-12 mb-3">Create/Update Blog Post</h3>
+<form action="" class="form col-md-8 m-auto col-12 border p-3 shadow-sm" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <h2>Are you sure you want to delete the post "{{ objectc.title }}"</h2>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-md btn-danger" value="Delete">
+        <button type="submit" class="btn btn-md btn-secondary"><a href="{% url 'single-post' object.id %}" class="text-light">Cancel </a> </button>
+    </div>
+</form>
+</div>
+
+{% endblock content %}
+

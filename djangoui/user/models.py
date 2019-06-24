@@ -7,6 +7,18 @@ from django.utils import timezone
 from PIL import Image
 
 
+def creaet_image_path(instance, filename):
+    """Change path to prof image  and save new name."""
+    ext = filename.split('.')[-1]
+    time_saved = str(timezone.now()).split(' ')
+    min_hour_sec = '-'.join(time_saved[1].split('.')[0].split(':'))
+    time_saved[1] = min_hour_sec
+    time_saved = '-'.join(time_saved)
+    filename = time_saved + "-pic-" + instance.user.username + '.' + ext
+
+    return '/'.join(['profiles', instance.user.username, filename])
+
+
 class Profile(models.Model):
     """User profile creation model."""
 
@@ -15,8 +27,6 @@ class Profile(models.Model):
                                   blank=True, null=True)
     other_names = models.CharField(max_length=62,
                                    blank=True, null=True)
-    image = models.CharField(max_length=250,
-                             blank=True, null=True)
     bio = models.TextField(max_length=700,
                            blank=True, null=True)
     other_email = models.EmailField(max_length=200, unique=True,
@@ -24,7 +34,8 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=50,
                                     blank=True, null=True)
     GUID = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    image = models.ImageField(default='default.jpg', upload_to="profile_pic")
+    image = models.ImageField(default='default.jpg',
+                              upload_to=creaet_image_path)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now_add=True)
     delete_at = models.DateTimeField(blank=True, null=True)
@@ -33,23 +44,13 @@ class Profile(models.Model):
         """Name to be shown instead of object."""
         return "{0} {1}".format(self.other_names, self.first_name)
 
-    def save(self):
+    def save(self, *args, **kwargs):
         """Overide save profile."""
-        super().save()
+        super().save(*args, **kwargs)
 
-        img = Image.open(self.image.path) # noqa
-        new_image_path_name = self.image.path.split('/')
-        ext = new_image_path_name[-1].split('.')[-1]
-        imgname = new_image_path_name[-1].split('.')[0]
-        time_saved = str(timezone.now()).split(' ')
-        min_hour_sec = '-'.join(time_saved[1].split('.')[0].split(':'))
-        time_saved[1] = min_hour_sec
-        time_saved = '-'.join(time_saved)
-        new_name = f'{self.user.username}-{time_saved}-profile.{ext}' # noqa
-        new_image_path_name[-1] = new_name
-        new_image_path_name = '/'.join(new_image_path_name)
+        img = Image.open(self.image.path)
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
-            img.save(new_image_path_name)
+            img.save(self.image.path)

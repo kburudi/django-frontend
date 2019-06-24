@@ -2,11 +2,14 @@
 {% block content %}
 
 <div class="row">
+{% if not posts %}
+    <h3 class="m-auto col-8 offset-2">No posts have been added yet </h3>
+{% endif %}
 {% for post in posts %}
-	<div class="card col-5 m-auto" style="width: 18rem;">
+	<div class="card col-5 m-auto mt-3" style="width: 18rem;">
       <img src="{{ post.image.url }}" width="200px" height="200px" class="card-img-top" alt="...">
       <div class="card-body">
-        <h3> {{ post.display_title }}</h3>
+        <h3> <a href="{% url 'single-post' post.id %}">{{ post.display_title }}</a></h3>
         <p class="card-text">{{ post.display_text }}.</p>
         <hr class='mb-1 mt-2'>
         <p class="mini-text">
@@ -16,5 +19,5 @@
       </div>
     </div>
 {% endfor%}
-{% endblock content %}
 </div>
+{% endblock content %}
